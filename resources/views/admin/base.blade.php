@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tk Aisyah</title>
+    <title></title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,10 +32,16 @@
     <div class="side-navbar active-nav d-flex justify-content-between  flex-wrap flex-column" id="sidebar">
         <ul class="nav flex-column text-white w-100 h-100">
             <a href="#" class="nav-link h3 text-white my-2">
-                TK Aisyah
+                RFID Parkir
             </a>
 
 
+            <a href="/admin/masterharga">
+                <li href="#" class="nav-link t-white">
+                    <i class='bx bx-money'></i>
+                    <span class="mx-2">Master Harga</span>
+                </li>
+            </a>
             
             <a href="/admin/admin">
                 <li href="#" class="nav-link t-white">
@@ -44,23 +50,37 @@
                 </li>
             </a>
 
-            <a href="/admin/guru">
+            <a href="/admin/petugas">
                 <li href="#" class="nav-link t-white">
                     <i class='bx bxs-user-check'></i>
-                    <span class="mx-2">Data Guru</span>
+                    <span class="mx-2">Data Petugas</span>
                 </li>
             </a>
 
-            <a href="/admin/siswa">
+            <a href="/admin/pelanggan">
                 <li href="#" class="nav-link t-white">
                     <i class='bx bxs-face'></i>
-                    <span class="mx-2">Data Siswa</span>
+                    <span class="mx-2">Data Pelanggan</span>
                 </li>
             </a>
-            <a href="/admin/absensi">
+            <a href="/admin/topup">
+                <li href="#" class="nav-link t-white">
+                    <i class='bx bxs-arrow-to-top'></i>
+                    <span class="mx-2">Topup</span>
+                </li>
+            </a>
+
+            <a href="/admin/parkir">
+                <li href="#" class="nav-link t-white">
+                    <i class='bx bxs-parking'></i>
+                    <span class="mx-2">Parkir</span>
+                </li>
+            </a>
+
+            <a href="/admin/laporan">
                 <li href="#" class="nav-link t-white">
                     <i class='bx bx-clipboard'></i>
-                    <span class="mx-2">Data Absensi</span>
+                    <span class="mx-2">Laporan</span>
                 </li>
             </a>
             

@@ -24,20 +24,6 @@ Route::get('/login', function () {
 });
 
 
-
-Route::get('/guru', function () {
-    return view('guru/dashboard');
-});
-
-Route::get('/guru/materi', function () {
-    return view('guru/materi');
-});
-
-Route::get('/guru/tugas', function () {
-    return view('guru/tugas');
-});
-
-
 Route::get('/admin', function () {
     return view('admin/dashboard');
 });
@@ -46,19 +32,29 @@ Route::get('/admin/admin', function () {
     return view('admin/admin');
 });
 
-Route::get('/admin/guru', function () {
-    return view('admin/guru');
+Route::get('/admin/petugas', function () {
+    return view('admin/petugas');
 });
 
-Route::get('/admin/siswa', function () {
-    return view('admin/siswa');
+Route::get('/admin/pelanggan', function () {
+    return view('admin/pelanggan');
 });
 
-Route::get('/admin/absensi', function () {
-    return view('admin/absensi');
+Route::get('/admin/topup', function () {
+    return view('admin/topup');
 });
 
+Route::get('/admin/parkir', function () {
+    return view('admin/parkir');
+});
 
+Route::get('/admin/laporan', function () {
+    return view('admin/laporan');
+});
+
+Route::get('/admin/masterharga', function () {
+    return view('admin/masterharga');
+});
 
 
 Route::post('/register',[AuthController::class,'register']);

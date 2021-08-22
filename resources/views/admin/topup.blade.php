@@ -1,7 +1,7 @@
 @extends('admin.base')
 
 @section('title')
-    Data Guru
+    Topup
 @endsection
 
 @section('content')
@@ -19,9 +19,12 @@
 
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5>Data Guru</h5>
-                <button type="button ms-auto" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#tambahdata">Tambah Data</button>
+                <h5>Data Pelanggan</h5>
+
+                <div class="mb-3">
+                    <label for="nocard" class="form-label">No. Kartu (scan)</label>
+                    <input type="text" class="form-control" id="nocard">
+                </div>
             </div>
 
 
@@ -36,11 +39,11 @@
                     </th>
 
                     <th>
-                        Alamat
+                        No Kartu
                     </th>
 
                     <th>
-                        No Hp
+                        Jumlah Topup
                     </th>
 
                     <th>
@@ -57,10 +60,12 @@
                         Andi
                     </td>
                     <td>
-                        Solo
+                        12312412412
                     </td>
                     <td>
-                        012839218213
+                        30000
+                    </td>
+
                     <td>
                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
                             data-bs-target="#tambahdata">Ubah</button>
@@ -80,42 +85,37 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Tambah Guru</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Topup Saldo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form>
+                            <div class="border rounded p-3">
                             <div class="mb-3">
-                                <label for="nama" class="form-label">Nama Guru</label>
-                                <input type="text" class="form-control" id="nama">
+                                <label for="nama" class="form-label">Nama Pelanggan</label>
+                                <input type="text" readonly class="form-control" id="nama">
                             </div>
 
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamat">
+                                <input type="text" readonly  class="form-control" id="alamat">
                             </div>
 
                             <div class="mb-3">
                                 <label for="nohp" class="form-label">No Hp</label>
-                                <input type="text" class="form-control" id="nohp">
+                                <input type="text" readonly class="form-control" id="nohp">
                             </div>
-
-                            <hr>
-
+                           
                             <div class="mb-3">
-                                <label for="username" class="form-label">UserName</label>
-                                <input type="text" class="form-control" id="username">
+                                <label for="saldo" class="form-label">Saldo</label>
+                                <input type="text" readonly class="form-control" id="saldo">
+                            </div>
+                        </div>
+                            <div class="mb-3 mt-3">
+                                <label for="topup" class="form-label">Topup</label>
+                                <input type="text" class="form-control" id="topup">
                             </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="konf_password" class="form-label">Konfirmasi Password</label>
-                                <input type="password" class="form-control" id="konf_password">
-                            </div>
                             <div class="mb-4"></div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
@@ -132,9 +132,17 @@
 
 @section('script')
     <script>
+        var myModal = new bootstrap.Modal(document.getElementById("tambahdata"), {});
+
         $(document).ready(function() {
 
         })
+
+        $(document).keypress(function(e) {
+            if ($("#nocard") && (e.keycode == 13 || e.which == 13)) {
+                myModal.show();
+            }
+        });
 
         function hapus(id, name) {
             swal({
