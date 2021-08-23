@@ -1,4 +1,4 @@
-@extends('admin.base')
+@extends('petugas.base')
 
 @section('title')
     Parkir

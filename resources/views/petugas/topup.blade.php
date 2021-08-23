@@ -1,7 +1,7 @@
-@extends('admin.base')
+@extends('petugas.base')
 
 @section('title')
-    Parkir
+    Topup
 @endsection
 
 @section('content')
@@ -19,7 +19,7 @@
 
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5>Data Parkir</h5>
+                <h5>Data Pelanggan</h5>
 
                 <div class="mb-3">
                     <label for="nocard" class="form-label">No. Kartu (scan)</label>
@@ -43,22 +43,12 @@
                     </th>
 
                     <th>
-                        No. Polisi
+                        Jumlah Topup
                     </th>
 
                     <th>
-                        Tanggal Masuk
+                        Action
                     </th>
-
-                    <th>
-                        Tanggal Keluar
-                    </th>
-
-                    <th>
-                        Biaya Parkir
-                    </th>
-
-                 
 
                 </thead>
 
@@ -73,22 +63,14 @@
                         12312412412
                     </td>
                     <td>
-                        AD 1234 SS
+                        30000
                     </td>
 
                     <td>
-                        23-08-2021 12:00:00
+                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#tambahdata">Ubah</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="hapus('id', 'nama') ">hapus</button>
                     </td>
-
-                    <td>
-                        23-08-2021 16:00:00
-                    </td>
-
-                    <td>
-                       3000
-                    </td>
-
-                 
                 </tr>
 
             </table>
@@ -130,8 +112,8 @@
                             </div>
                         </div>
                             <div class="mb-3 mt-3">
-                                <label for="nopol" class="form-label">Masukan No. Polisi</label>
-                                <input type="text" class="form-control" id="nopol">
+                                <label for="topup" class="form-label">Topup</label>
+                                <input type="text" class="form-control" id="topup">
                             </div>
 
                             <div class="mb-4"></div>
@@ -151,21 +133,14 @@
 @section('script')
     <script>
         var myModal = new bootstrap.Modal(document.getElementById("tambahdata"), {});
-        var tglKeluar = null;
+
         $(document).ready(function() {
 
         })
 
         $(document).keypress(function(e) {
             if ($("#nocard") && (e.keycode == 13 || e.which == 13)) {
-                
-                if(tglKeluar == null){
-                    swal("Pembayaran Berhasi, Motor dengan nopol AD 1234 SS", {
-                            icon: "success",
-                        });
-                }else{
-                    myModal.show();
-                }
+                myModal.show();
             }
         });
 

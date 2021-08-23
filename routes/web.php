@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,6 +57,20 @@ Route::get('/admin/masterharga', function () {
     return view('admin/masterharga');
 });
 
+
+Route::get('/petugas', function () {
+    return view('petugas/dashboard');
+});
+
+Route::get('/petugas/topup', function () {
+    return view('petugas/topup');
+});
+
+Route::get('/petugas/parkir', function () {
+    return view('petugas/parkir');
+});
+
+Route::get('/cetaklaporan/{date}', [LaporanController::class, 'cetakLaporan'])->name('cetakLaporan');
 
 Route::post('/register',[AuthController::class,'register']);
 
