@@ -68,7 +68,7 @@
         <!-- Top Nav -->
         <nav class="navbar top-navbar navbar-light b-white px-5 " style="z-index: 10">
             <a class="btn border-0" id="menu-btn"><i class="bx bx-menu"></i></a>
-            <a>@yield('title')</a>
+            <a class="d-none">@yield('title')</a>
         </nav>
         <!--End Top Nav -->
         <div class="content-wrapper bg-light p-2" style="height: 100vh;">
@@ -82,6 +82,9 @@
     <script src="{{ asset('js/myStyle.js') }}"></script>
     <script src="{{ asset('js/sidebar.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{ asset('js/dialog.js') }}"></script>
+    <script src="{{ asset('js/moment.js') }}"></script>
+
     @yield('script')
 </body>
 

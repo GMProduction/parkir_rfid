@@ -15,6 +15,12 @@ class CreateParkirsTable extends Migration
     {
         Schema::create('parkirs', function (Blueprint $table) {
             $table->id();
+            $table->dateTime('tanggal_masuk');
+            $table->dateTime('tanggal_keluar')->nullable(true)->default(null);
+            $table->integer('biaya_parkir')->nullable(true)->default(null);
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('no_pol');
             $table->timestamps();
         });
     }

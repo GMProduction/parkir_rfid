@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('roles');
             $table->text('alamat');
             $table->string('no_hp');
-            $table->string('kode_kartu')->unique();
             $table->timestamps();
         });
     }

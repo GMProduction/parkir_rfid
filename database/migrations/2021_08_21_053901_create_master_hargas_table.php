@@ -15,8 +15,6 @@ class CreateMasterHargasTable extends Migration
     {
         Schema::create('master_hargas', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('jenis_id')->unsigned();
-            $table->foreign('jenis_id')->references('id')->on('jenis_kendaraans');
             $table->integer('harga');
             $table->timestamps();
         });

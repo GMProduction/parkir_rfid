@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MasterHarga extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+      'harga'
+    ];
 }

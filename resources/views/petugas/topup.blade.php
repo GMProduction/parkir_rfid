@@ -19,7 +19,7 @@
 
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5>Data Pelanggan</h5>
+                <h5>Data Topup Saldo</h5>
 
                 <div class="mb-3">
                     <label for="nocard" class="form-label">No. Kartu (scan)</label>
@@ -30,54 +30,40 @@
 
             <table class="table table-striped table-bordered ">
                 <thead>
-                    <th>
-                        #
-                    </th>
-
-                    <th>
-                        Nama
-                    </th>
-
-                    <th>
-                        No Kartu
-                    </th>
-
-                    <th>
-                        Jumlah Topup
-                    </th>
-
-                    <th>
-                        Action
-                    </th>
-
+                <tr>
+                    <th>#</th>
+                    <th>Nama</th>
+                    <th>No Kartu</th>
+                    <th>Jumlah Topup</th>
+                    <th>Tanggal</th>
+                    <th>Action</th>
+                </tr>
                 </thead>
 
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        Andi
-                    </td>
-                    <td>
-                        12312412412
-                    </td>
-                    <td>
-                        30000
-                    </td>
+                @forelse($data as $key => $d)
+                    <tr>
+                        <td>{{$key + 1}}</td>
+                        <td>{{$d->user->nama}}</td>
+                        <td>{{$d->user->username}}</td>
+                        <td>{{number_format($d->nominal, 0)}}</td>
+                        <td>{{date('d F Y H:i:s', strtotime($d->tanggal))}}</td>
 
-                    <td>
-                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#tambahdata">Ubah</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="hapus('id', 'nama') ">hapus</button>
-                    </td>
-                </tr>
+                        <td>
+                            <a class="btn btn-success btn-sm" id="editData" data-nominal="{{$d->nominal}}" data-id="{{$d->id}}" data-nocard="{{$d->user->username}}">Ubah</a>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="hapus('{{$d->id}}', '{{$d->user->nama}}') ">hapus</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="6">Tidak ada data</td>
+                    </tr>
+                @endforelse
 
             </table>
-
+            <div class="d-flex justify-content-end">
+                {{$data->links()}}
+            </div>
         </div>
-
-
 
 
         <!-- Modal Tambah-->
@@ -89,8 +75,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="border rounded p-3">
+                        <div class="border rounded p-3">
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Pelanggan</label>
                                 <input type="text" readonly class="form-control" id="nama">
@@ -98,24 +83,27 @@
 
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat</label>
-                                <input type="text" readonly  class="form-control" id="alamat">
+                                <input type="text" readonly class="form-control" id="alamat">
                             </div>
 
                             <div class="mb-3">
                                 <label for="nohp" class="form-label">No Hp</label>
                                 <input type="text" readonly class="form-control" id="nohp">
                             </div>
-                           
+
                             <div class="mb-3">
                                 <label for="saldo" class="form-label">Saldo</label>
                                 <input type="text" readonly class="form-control" id="saldo">
                             </div>
                         </div>
+                        <form id="formTopup" onsubmit="return SaveTopup()">
+                            @csrf
+                            <input id="id" name="id" hidden>
+                            <input id="user_id" name="user_id" hidden>
                             <div class="mb-3 mt-3">
-                                <label for="topup" class="form-label">Topup</label>
-                                <input type="text" class="form-control" id="topup">
+                                <label for="nominal" class="form-label">Topup</label>
+                                <input type="text" class="form-control" id="nominal" name="nominal">
                             </div>
-
                             <div class="mb-4"></div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>
@@ -134,33 +122,57 @@
     <script>
         var myModal = new bootstrap.Modal(document.getElementById("tambahdata"), {});
 
-        $(document).ready(function() {
-
+        $(document).ready(function () {
+            $("#nocard").focus();
         })
 
-        $(document).keypress(function(e) {
+        $(document).keypress(function (e) {
             if ($("#nocard") && (e.keycode == 13 || e.which == 13)) {
-                myModal.show();
+                $('#formTopup #id').val('');
+                $('#formTopup #nominal').val('');
+                getPelanggan($("#nocard").val())
             }
         });
 
+        function getPelanggan(nocard) {
+
+            $.get('/petugas/detail-pelanggan/' + nocard, function (data) {
+                if (data) {
+                    console.log(data)
+                    $('#tambahdata #nama').val(data['nama'])
+                    $('#tambahdata #alamat').val(data['alamat'])
+                    $('#tambahdata #nohp').val(data['no_hp'])
+                    $('#tambahdata #saldo').val(data['saldo'].toLocaleString())
+                    $('#tambahdata #user_id').val(data['id'])
+                    myModal.show();
+                    $('#tambahdata #nominal').focus()
+                } else {
+                    swal("Data tidak ditemukan").then((dat) => {
+                        $("#nocard").val('').focus();
+                    });
+                }
+            })
+        }
+
+        $(document).on('click','#editData', function () {
+            var nocard = $(this).data('nocard');
+            $('#formTopup #id').val($(this).data('id'));
+            $('#formTopup #nominal').val($(this).data('nominal'));
+            getPelanggan(nocard);
+        })
+
+        $('#tambahdata').on('hidden.bs.modal', function () {
+            $("#nocard").val('').focus();
+        });
+
+        function SaveTopup() {
+            saveData('Topup Saldo', 'formTopup')
+            return false;
+        }
+
         function hapus(id, name) {
-            swal({
-                    title: "Menghapus data?",
-                    text: "Apa kamu yakin, ingin menghapus data ?!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        swal("Berhasil Menghapus data!", {
-                            icon: "success",
-                        });
-                    } else {
-                        swal("Data belum terhapus");
-                    }
-                });
+            deleteData(name,'/petugas/topup/'+id+'/delete');
+            return false
         }
     </script>
 

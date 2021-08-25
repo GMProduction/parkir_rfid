@@ -11,11 +11,19 @@
             swal("Berhasil!", "Berhasil Menambah data!", "success");
         </script>
     @endif
-
+    <style>
+        .bg-red {
+            background-color: #ff8393 !important;
+        }
+    </style>
     <section class="m-2">
+
+
         <div class="table-container">
+
+
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5>Laporan</h5>
+                <h5>Laporan Saldo</h5>
                 <form id="formTanggal">
                     <div class="d-flex align-items-center">
                         <i class='bx bx-calendar me-2' style="font-size: 1.4rem"></i>
@@ -34,32 +42,29 @@
             </div>
 
 
-            <table class="table table-striped table-bordered ">
+            <table class="table table-bordered ">
                 <thead>
                 <tr>
                     <th>#</th>
+                    <th>Tanggal</th>
                     <th>Nama</th>
                     <th>No Kartu</th>
-                    <th>No. Polisi</th>
-                    <th>Tanggal Masuk</th>
-                    <th>Tanggal Keluar</th>
-                    <th>Biaya Parkir</th>
+                    <th>Status</th>
+                    <th>Nominal</th>
                 </tr>
                 </thead>
-
                 @forelse($data as $key => $d)
                     <tr>
-                        <td>{{$key + 1}}</td>
-                        <td>{{$d->user->nama}}</td>
-                        <td>{{$d->user->username}}</td>
-                        <td>{{$d->no_pol}}</td>
-                        <td>{{date('d F Y H:i:s', strtotime($d->tanggal_masuk))}}</td>
-                        <td>{{date('d F Y H:i:s', strtotime($d->tanggal_keluar))}}</td>
-                        <td class="text-end">Rp. {{number_format($d->biaya_parkir, 0)}}</td>
+                        <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$key + 1}}</td>
+                        <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{date('d F Y H:i:s', strtotime($d->tanggal))}}</td>
+                        <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$d->user->nama}}</td>
+                        <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$d->user->username}}</td>
+                        <td class="text-center {{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$d->status}}</td>
+                        <td class="text-end {{$d->status == 'kredit' ? 'bg-red' : ''}}">{{number_format($d->nominal, 0)}}</td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">Tidak ada data</td>
+                        <td class="text-center" colspan="6">Tidak ada data</td>
                     </tr>
                 @endforelse
             </table>
@@ -106,7 +111,7 @@
 
         $(document).on('click','#cetak', function () {
             console.log('/cetaklaporan?'+$('#formTanggal').serialize());
-            $(this).attr('href', '/admin/cetaklaporan?'+$('#formTanggal').serialize());
+            $(this).attr('href', '/admin/cetaklaporansaldo?'+$('#formTanggal').serialize());
         })
     </script>
 

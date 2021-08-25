@@ -30,72 +30,38 @@
 
             <table class="table table-striped table-bordered ">
                 <thead>
-                    <th>
-                        #
-                    </th>
-
-                    <th>
-                        Nama
-                    </th>
-
-                    <th>
-                        No Kartu
-                    </th>
-
-                    <th>
-                        No. Polisi
-                    </th>
-
-                    <th>
-                        Tanggal Masuk
-                    </th>
-
-                    <th>
-                        Tanggal Keluar
-                    </th>
-
-                    <th>
-                        Biaya Parkir
-                    </th>
-
-                 
-
+                <tr>
+                    <th>#</th>
+                    <th>Nama</th>
+                    <th>No Kartu</th>
+                    <th>No. Polisi</th>
+                    <th>Tanggal Masuk</th>
+                    <th>Tanggal Keluar</th>
+                    <th>Biaya Parkir</th>
+                </tr>
                 </thead>
 
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        Andi
-                    </td>
-                    <td>
-                        12312412412
-                    </td>
-                    <td>
-                        AD 1234 SS
-                    </td>
-
-                    <td>
-                        23-08-2021 12:00:00
-                    </td>
-
-                    <td>
-                        23-08-2021 16:00:00
-                    </td>
-
-                    <td>
-                       3000
-                    </td>
-
-                 
-                </tr>
+                @forelse($data as $key => $d)
+                    <tr>
+                        <td>{{$key + 1}}</td>
+                        <td>{{$d->user->nama}}</td>
+                        <td>{{$d->user->username}}</td>
+                        <td>{{$d->no_pol}}</td>
+                        <td>{{date('d F Y H:i:s', strtotime($d->tanggal_masuk))}}</td>
+                        <td>{{$d->tanggal_keluar ? date('d F Y H:i:s', strtotime($d->tanggal_keluar)) : '-'}}</td>
+                        <td class="text-end">Rp. {{$d->biaya_parkir ? number_format($d->biaya_parkir, 0) : '-'}}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">Tidak ada data</td>
+                    </tr>
+                @endforelse
 
             </table>
-
+            <div class="d-flex justify-content-end">
+                {{$data->links()}}
+            </div>
         </div>
-
-
 
 
         <!-- Modal Tambah-->
@@ -107,8 +73,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="border rounded p-3">
+                        <div class="border rounded p-3">
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Pelanggan</label>
                                 <input type="text" readonly class="form-control" id="nama">
@@ -116,22 +81,26 @@
 
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat</label>
-                                <input type="text" readonly  class="form-control" id="alamat">
+                                <input type="text" readonly class="form-control" id="alamat">
                             </div>
 
                             <div class="mb-3">
                                 <label for="nohp" class="form-label">No Hp</label>
                                 <input type="text" readonly class="form-control" id="nohp">
                             </div>
-                           
+
                             <div class="mb-3">
                                 <label for="saldo" class="form-label">Saldo</label>
                                 <input type="text" readonly class="form-control" id="saldo">
                             </div>
                         </div>
+                        <form id="form" onsubmit="return Save()">
+                            @csrf
+                            <input id="user_id" name="user_id" hidden>
+
                             <div class="mb-3 mt-3">
                                 <label for="nopol" class="form-label">Masukan No. Polisi</label>
-                                <input type="text" class="form-control" id="nopol">
+                                <input type="text" class="form-control" id="nopol" name="no_pol">
                             </div>
 
                             <div class="mb-4"></div>
@@ -152,31 +121,75 @@
     <script>
         var myModal = new bootstrap.Modal(document.getElementById("tambahdata"), {});
         var tglKeluar = null;
-        $(document).ready(function() {
-
+        $(document).ready(function () {
+            $("#nocard").focus();
         })
 
-        $(document).keypress(function(e) {
+        $(document).keypress(function (e) {
             if ($("#nocard") && (e.keycode == 13 || e.which == 13)) {
-                
-                if(tglKeluar == null){
-                    swal("Pembayaran Berhasi, Motor dengan nopol AD 1234 SS", {
-                            icon: "success",
-                        });
-                }else{
-                    myModal.show();
-                }
+                getPelanggan($("#nocard").val())
             }
         });
 
+        function getPelanggan(nocard) {
+            $.get('/admin/detail-pelanggan/' + nocard, function (data) {
+                if (data) {
+                    $.get('/admin/parkir/get-pelanggan/' + data['id'], function (response) {
+                        console.log(response)
+                        if (response['status'] === 200) {
+                            var token = {
+                                '_token': '{{csrf_token()}}'
+                            }
+                            $.post('/admin/parkir/'+response['data']['id']+'/update',token, function (jqXHR, textStatus, errorThrown) {
+                                console.log(jqXHR)
+                                if (jqXHR){
+                                    if (jqXHR['status'] === 203){
+                                        swal("Member "+jqXHR['data']['nama']+" Saldo tidak cukup, Silahkan mengisi saldo").then((dat) => {
+                                            $('#nocard').val('').focus()
+                                        });
+                                    }else {
+                                        swal("Member "+jqXHR['data']['user']['nama']+" dengan nomor polisi kendaraan "+jqXHR['data']['no_pol']+" telah keluar", { icon: "success",button: false, timer: 1000}).then((dat) => {
+                                            window.location.reload();
+                                        });
+                                    }
+
+                                }
+                            })
+                        } else {
+                            $('#tambahdata #nama').val(data['nama'])
+                            $('#tambahdata #alamat').val(data['alamat'])
+                            $('#tambahdata #nohp').val(data['no_hp'])
+                            $('#tambahdata #saldo').val(data['saldo'].toLocaleString())
+                            $('#tambahdata #user_id').val(data['id'])
+                            myModal.show();
+                            $('#tambahdata #form #nopol').val('').focus()
+                        }
+                    });
+                } else {
+                    swal("Data tidak ditemukan").then((dat) => {
+                        $("#nocard").val('').focus();
+                    });
+                }
+            })
+        }
+
+        $('#tambahdata').on('hidden.bs.modal', function () {
+            $("#nocard").val('').focus();
+        });
+
+        function Save() {
+            saveData('Simpan data parkir masuk', 'form')
+            return false;
+        }
+
         function hapus(id, name) {
             swal({
-                    title: "Menghapus data?",
-                    text: "Apa kamu yakin, ingin menghapus data ?!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
+                title: "Menghapus data?",
+                text: "Apa kamu yakin, ingin menghapus data ?!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
                 .then((willDelete) => {
                     if (willDelete) {
                         swal("Berhasil Menghapus data!", {

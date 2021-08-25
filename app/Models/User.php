@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Monolog\Handler\SlackHandler;
 
 class User extends Authenticatable
 {
@@ -18,9 +19,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
+        'nama',
+        'username',
         'password',
+        'roles',
+        'alamat',
+        'no_hp'
     ];
 
     /**
@@ -41,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeSaldo($query, $id){
+        $debit = Saldo::where([['status','=','debit'],['id','=',$id]])->sum('nominal');
+        $kredit = Saldo::where([['status','=','kredit'],['id','=',$id]])->sum('nominal');
+        $saldo = $debit-$kredit;
+        return $saldo;
+    }
+
+
 }

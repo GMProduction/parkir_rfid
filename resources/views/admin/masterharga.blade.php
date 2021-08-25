@@ -20,20 +20,24 @@
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5>Master Harga</h5>
-               
+
             </div>
 
             <div class="border rounded p-3">
-                <div class="mb-3">
-                    <label for="nama" class="form-label">Harga</label>
-                    <input type="text" class="form-control" id="nama">
-                </div>
+                <form id="form" onsubmit="return saveHarga()">
+                    @csrf
+                    <input name="id" value="{{$data->id}}" hidden>
+                    <div class="mb-3">
+                        <label for="harga" class="form-label">Harga</label>
+                        <input type="text" class="form-control" id="harga" name="harga" value="{{$data->harga}}">
+                    </div>
 
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
 
+                </form>
             </div>
 
-           
+
         </div>
 
 
@@ -43,18 +47,23 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
         })
 
+        function saveHarga() {
+            saveData('Simpan Master Harga', 'form')
+            return false;
+        }
+
         function hapus(id, name) {
             swal({
-                    title: "Menghapus data?",
-                    text: "Apa kamu yakin, ingin menghapus data ?!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
+                title: "Menghapus data?",
+                text: "Apa kamu yakin, ingin menghapus data ?!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
                 .then((willDelete) => {
                     if (willDelete) {
                         swal("Berhasil Menghapus data!", {

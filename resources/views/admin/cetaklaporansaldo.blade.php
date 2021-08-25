@@ -50,7 +50,7 @@
         <img src="{{ public_path('static-image/logo.png') }}" style="width: 120px; float: left;" />
 
         <div>
-            <h4 style=" text-align: center;margin-bottom:0;margin-top:0">Laporan Parkir</h4>
+            <h4 style=" text-align: center;margin-bottom:0;margin-top:0">Laporan Saldo</h4>
             @if($start)
                 <h5 style=" text-align: right;margin-bottom:0;margin-top:0">{{date('d F Y', strtotime($start))}} - {{date('d F Y', strtotime($end))}}</h5>
             @else
@@ -62,55 +62,31 @@
 
         <table>
             <thead>
-              <tr>
-                <th>
-                    #
-                </th>
-
-                <th>
-                    Nama
-                </th>
-
-                <th>
-                    No Kartu
-                </th>
-
-                <th>
-                    No. Polisi
-                </th>
-
-                <th>
-                    Tanggal Masuk
-                </th>
-
-                <th>
-                    Tanggal Keluar
-                </th>
-
-                <th>
-                    Biaya Parkir
-                </th>
-              </tr>
+            <tr>
+                <th>#</th>
+                <th>Tanggal</th>
+                <th>Nama</th>
+                <th>No Kartu</th>
+                <th>Status</th>
+                <th>Nominal</th>
+            </tr>
             </thead>
             <hr>
             <tbody>
             @forelse($data as $key => $d)
                 <tr>
-                    <td>{{$key + 1}}</td>
-                    <td>{{$d->user->nama}}</td>
-                    <td>{{$d->user->username}}</td>
-                    <td>{{$d->no_pol}}</td>
-                    <td>{{date('d F Y H:i:s', strtotime($d->tanggal_masuk))}}</td>
-                    <td>{{date('d F Y H:i:s', strtotime($d->tanggal_keluar))}}</td>
-                    <td class="text-end">Rp. {{number_format($d->biaya_parkir, 0)}}</td>
+                    <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$key + 1}}</td>
+                    <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{date('d F Y H:i:s', strtotime($d->tanggal))}}</td>
+                    <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$d->user->nama}}</td>
+                    <td class="{{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$d->user->username}}</td>
+                    <td class="text-center {{$d->status == 'kredit' ? 'bg-red' : ''}}">{{$d->status}}</td>
+                    <td class="text-end {{$d->status == 'kredit' ? 'bg-red' : ''}}">{{number_format($d->nominal, 0)}}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center">Tidak ada data</td>
+                    <td class="text-center" colspan="6">Tidak ada data</td>
                 </tr>
             @endforelse
-
-            </tbody>
           </table>
 
 
