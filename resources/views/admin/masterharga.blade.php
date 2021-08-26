@@ -26,10 +26,10 @@
             <div class="border rounded p-3">
                 <form id="form" onsubmit="return saveHarga()">
                     @csrf
-                    <input name="id" value="{{$data->id}}" hidden>
+                    <input name="id" value="{{$data->id ?? ""}}" hidden>
                     <div class="mb-3">
                         <label for="harga" class="form-label">Harga</label>
-                        <input type="text" class="form-control" id="harga" name="harga" value="{{$data->harga}}">
+                        <input type="text" class="form-control" id="harga" name="harga" value="{{$data->harga ?? ""}}">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Simpan</button>
