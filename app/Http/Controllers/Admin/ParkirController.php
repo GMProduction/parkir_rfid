@@ -44,7 +44,7 @@ class ParkirController extends Controller
         $jam      = floor($diff / (60 * 60)) == 0 ? 1 : floor($diff / (60 * 60));
 
         $harga = MasterHarga::first();
-        $biaya = (int)$jam * (int)$harga->harga;
+        $biaya = (int)$harga->harga;
         $sisaSaldo = $this->cekSaldo($parkir->user_id);
 
         if ((int)$biaya > (int)$sisaSaldo){
