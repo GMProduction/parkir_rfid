@@ -168,7 +168,7 @@
 
         function SaveTopup() {
             if (parseInt($('#nominal').val()) < 2000 ){
-                swal('Maaf, minimal topup saldo senilai Rp. 2.000,-',{button: false, icon: 'warning',timer: 1000})
+                swal('Maaf, minimal topup saldo senilai Rp. 2.000,-',{button: false, icon: 'warning',timer: 2000})
                 return false
             }
             saveData('Topup Saldo', 'formTopup')
