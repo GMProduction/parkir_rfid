@@ -103,6 +103,7 @@
                             <div class="mb-3 mt-3">
                                 <label for="nominal" class="form-label">Topup</label>
                                 <input type="text" class="form-control" id="nominal" name="nominal">
+                                <span class="text-muted">Minimal topup Rp. 2.000</span>
                             </div>
                             <div class="mb-4"></div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -166,6 +167,10 @@
         });
 
         function SaveTopup() {
+            if (parseInt($('#nominal').val()) < 2000 ){
+                swal('Maaf, minimal topup saldo senilai Rp. 2.000,-',{button: false, icon: 'warning',timer: 1000})
+                return false
+            }
             saveData('Topup Saldo', 'formTopup')
             return false;
         }
