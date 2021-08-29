@@ -46,12 +46,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function scopeSaldo($query, $id){
-        $debit = Saldo::where([['status','=','debit'],['id','=',$id]])->sum('nominal');
-        $kredit = Saldo::where([['status','=','kredit'],['id','=',$id]])->sum('nominal');
-        $saldo = $debit-$kredit;
-        return $saldo;
+    public function scopeFilter($query, $filter){
+        $query->when($filter ?? false, function ($query, $cari) {
+            $query->where('nama','like','%'.$cari.'%')->orWhere('username','=',$cari);
+        });
     }
+
+
 
 
 }

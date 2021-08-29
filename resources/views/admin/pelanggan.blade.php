@@ -21,10 +21,18 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5>Data Pelanggan</h5>
                 <button type="button ms-auto" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#tambahdata">Tambah Data</button>
+                        data-bs-target="#tambahdata">Tambah Data</button>
             </div>
 
-
+            <div class="d-flex justify-content-end mb-3">
+               <div>
+                   <form>
+                       <label for="nocard" class="form-label">No. Kartu (scan) / Nama</label>
+                       <input type="text" class="form-control" id="nocard" name="cari" value="{{request('cari')}}">
+                       <button type="submit" hidden></button>
+                   </form>
+               </div>
+            </div>
             <table class="table table-striped table-bordered ">
                 <thead>
                     <tr>
@@ -54,7 +62,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td class="text-center" colspan="6">Tidak ada data</td>
+                        <td class="text-center" colspan="7">Tidak ada data</td>
                     </tr>
                 @endforelse
 

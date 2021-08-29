@@ -17,7 +17,7 @@ class PelangganController extends Controller
         if (\request()->isMethod('POST')){
             return $this->store();
         }
-        $user = User::where('roles','=','user')->paginate(10);
+        $user = User::where('roles','=','user')->filter(\request('cari'))->paginate(10);
         foreach ($user as $key => $u) {
             $debit  = Saldo::where([['status', '=', 'debit'], ['user_id', '=', $u->id]])->sum('nominal');
             $kredit = Saldo::where([['status', '=', 'kredit'], ['user_id', '=', $u->id]])->sum('nominal');
