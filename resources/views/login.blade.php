@@ -39,7 +39,7 @@
             <div class="card login-content shadow-lg border-0">
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="logo" src="https://cdn3.iconfinder.com/data/icons/galaxy-open-line-gradient-i/200/account-256.png">
+                        <img class="logo" src="{{asset('/static-image/login.jpeg')}}">
                     </div>
                     <h3 class="text-logo">Login</h3>
                     <br>
